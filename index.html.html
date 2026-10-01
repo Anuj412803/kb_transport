@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KB Transport — विश्वासाने चालवा | Wagholi, Pune</title>
+<meta name="description" content="KB Transport — Pune's most trusted vehicle rental, driver service & house shifting. Khandve Nagar, Wagholi." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Baloo+Bhai+2:wght@500;700;800&family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&family=Tiro+Devanagari+Marathi:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+:root{
+  --cream:#FFF8E7;
+  --ink:#141210;
+  --saffron:#FF6B1A;
+  --marigold:#FFB627;
+  --peacock:#0B6B63;
+  --maroon:#7C2D12;
+}
+*{ -webkit-tap-highlight-color: transparent; }
+html,body{ background:var(--cream); color:var(--ink); overflow-x:hidden; margin:0; padding:0; }
+body{ font-family:'Inter',sans-serif; cursor:none; }
+@media(max-width:1024px){ body{ cursor:auto; } }
+
+.display{ font-family:'Anton',sans-serif; letter-spacing:-.01em; line-height:.88; }
+.serif-in{ font-family:'Tiro Devanagari Marathi',serif; }
+.font-poppins{ font-family:'Poppins',sans-serif; }
+
+/* ============ PROGRESS ============ */
+#progress{
+  position:fixed; top:0; left:0; height:3px; width:0%;
+  background:linear-gradient(90deg,var(--saffron),var(--marigold),var(--peacock));
+  z-index:9998; transition: width .05s linear;
+  box-shadow: 0 0 12px rgba(255,107,26,.7);
+}
+
+/* ============ CURSOR ============ */
+.c-dot,.c-ring,.c-trail{
+  position:fixed; top:0; left:0; pointer-events:none; z-index:9999;
+  transform: translate(-50%,-50%); border-radius:9999px; will-change: transform;
+}
+.c-dot{ width:9px; height:9px; background:var(--saffron); mix-blend-mode: difference; }
+.c-ring{
+  width:48px; height:48px; border:1.5px solid var(--ink);
+  transition: width .28s ease, height .28s ease, border-color .28s ease, background .28s ease;
+}
+.c-ring.hover{
+  width:92px; height:92px; background:rgba(255,107,26,.14); border-color:var(--saffron);
+}
+.c-trail{ width:7px; height:7px; opacity:.8; }
+.c-trail:nth-child(1){ background:var(--saffron); }
+.c-trail:nth-child(2){ background:var(--marigold); }
+@media(max-width:1024px){ .c-dot,.c-ring,.c-trail{ display:none; } }
+
+/* ============ GRAIN ============ */
+.grain{
+  position:fixed; inset:0; pointer-events:none; z-index:60;
+  opacity:.05; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* ============ SECTION INDICATOR ============ */
+#secInd{
+  position:fixed; right:22px; top:50%; transform:translateY(-50%);
+  z-index:75; display:flex; flex-direction:column; gap:14px;
+}
+#secInd button{
+  width:10px; height:10px; border-radius:9999px;
+  background:rgba(20,18,16,.22); border:none; cursor:none; padding:0;
+  transition: all .4s cubic-bezier(.86,0,.07,1);
+}
+#secInd button.active{ background:var(--saffron); transform:scale(1.4); }
+#secInd button:hover{ background:var(--maroon); }
+@media(max-width:1024px){ #secInd{ display:none; } }
+
+/* ============ PRELOADER ============ */
+#preloader{
+  position:fixed; inset:0; z-index:10000; background:var(--cream);
+  display:flex; align-items:center; justify-content:center; flex-direction:column; gap:28px;
+}
+#preloader .kolam-line{
+  fill:none; stroke:var(--saffron); stroke-width:2.2; stroke-linecap:round;
+  stroke-dasharray: 400; stroke-dashoffset: 400;
+}
+#preloader .kolam-node{ fill:var(--maroon); }
+.preload-curtain{
+  position:fixed; top:0; height:100%; width:50%; background:var(--ink); z-index:9999;
+  transition: transform 1s cubic-bezier(.86,0,.07,1); pointer-events:none;
+}
+.preload-curtain.l{ left:0; } .preload-curtain.r{ right:0; }
+body.loaded .preload-curtain.l{ transform: translateX(-100%); }
+body.loaded .preload-curtain.r{ transform: translateX(100%); }
+body.loaded #preloader{ display:none; }
+
+/* ============ NAV ============ */
+.navbar{
+  position:fixed; top:0; left:0; right:0; z-index:80;
+  padding:18px 0;
+  transition: background .4s ease, padding .4s ease, transform .5s cubic-bezier(.86,0,.07,1);
+}
+.navbar.scrolled{
+  background:rgba(255,248,231,.9);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  padding:10px 0; border-bottom:1px solid rgba(20,18,16,.08);
+}
+.navbar.hide{ transform: translateY(-100%); }
+.nav-link{ position:relative; font-weight:600; font-size:14px; color:var(--ink); padding:4px 0; }
+.nav-link::after{
+  content:''; position:absolute; left:0; bottom:-2px; height:2px; width:0;
+  background:var(--saffron); transition: width .35s cubic-bezier(.86,0,.07,1);
+}
+.nav-link:hover{ color:var(--saffron); }
+.nav-link:hover::after{ width:100%; }
+
+/* ============ BUTTONS ============ */
+.btn{
+  position:relative; display:inline-flex; align-items:center; gap:10px;
+  padding:16px 28px; border-radius:9999px;
+  font-weight:700; font-size:14px; letter-spacing:.02em;
+  overflow:hidden; isolation:isolate;
+  transition: transform .3s cubic-bezier(.2,.8,.2,1);
+}
+.btn-primary{ background:var(--saffron); color:#fff; box-shadow:0 12px 30px -10px rgba(255,107,26,.55); }
+.btn-primary::before{
+  content:''; position:absolute; inset:0; z-index:-1; background:var(--ink);
+  border-radius:inherit; transform: translateY(101%); transition: transform .45s cubic-bezier(.86,0,.07,1);
+}
+.btn-primary:hover::before{ transform:translateY(0); }
+.btn-ghost{ background:transparent; color:var(--ink); border:1.5px solid var(--ink); }
+.btn-ghost:hover{ background:var(--ink); color:var(--cream); }
+
+/* ============ HERO ============ */
+.hero-title{ font-family:'Anton',sans-serif; font-size: clamp(64px, 13vw, 210px); line-height:.82; letter-spacing:-.02em; color:var(--ink); }
+.hero-title .line2{ -webkit-text-stroke: 2px var(--ink); color: transparent; }
+.hero-title .accent{ color: var(--saffron); font-style: normal; }
+
+.marigold-dot{
+  position:absolute; border-radius:9999px;
+  background: radial-gradient(circle at 30% 30%, #FFD27D, var(--saffron));
+  box-shadow: 0 0 24px rgba(255,107,26,.6); pointer-events:none;
+}
+
+#webgl-hero{ position:absolute; inset:0; z-index:0; width:100%; height:100%; pointer-events:none; }
+#truck-3d{
+  position:absolute; top:50%; right:5vw; transform:translateY(-50%);
+  width:48vw; height:60vh; z-index:1; pointer-events:none;
+}
+@media(max-width:1024px){ #truck-3d{ display:none; } }
+
+/* ============ MARQUEE ============ */
+.marquee{ overflow:hidden; white-space:nowrap; display:flex; user-select:none; }
+.marquee-inner{ display:flex; gap:48px; animation: marquee 30s linear infinite; padding-right:48px; flex-shrink:0; }
+.marquee.reverse .marquee-inner{ animation-direction: reverse; }
+@keyframes marquee{ to{ transform: translateX(-100%); } }
+.marquee-item{
+  font-family:'Anton',sans-serif; font-size:clamp(28px, 4vw, 60px);
+  letter-spacing:.02em; display:inline-flex; align-items:center; gap:24px;
+}
+.marquee-item .dot{ width:12px; height:12px; border-radius:9999px; background:var(--marigold); }
+
+/* ============ TRUCK BORDER ============ */
+.truck-border{
+  height:26px; width:100%;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='26' viewBox='0 0 60 26'><rect width='60' height='26' fill='%23FF6B1A'/><path d='M0 0 L30 26 L60 0 Z' fill='%23FFB627'/><circle cx='30' cy='13' r='4' fill='%230B6B63'/><circle cx='30' cy='13' r='1.5' fill='%23FFF8E7'/></svg>");
+  background-repeat: repeat-x; background-size: 60px 26px;
+}
+.truck-border.teal{
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='26' viewBox='0 0 60 26'><rect width='60' height='26' fill='%230B6B63'/><path d='M0 0 L30 26 L60 0 Z' fill='%23FFB627'/><circle cx='30' cy='13' r='4' fill='%23B91C1C'/><circle cx='30' cy='13' r='1.5' fill='%23FFF8E7'/></svg>");
+}
+
+/* ============ EYEBROW ============ */
+.eyebrow{
+  display:inline-flex; align-items:center; gap:10px;
+  font-family:'Poppins',sans-serif; font-weight:700;
+  font-size:12px; letter-spacing:.25em; text-transform:uppercase; color:var(--maroon);
+}
+.eyebrow::before, .eyebrow::after{ content:''; width:22px; height:1px; background:var(--maroon); opacity:.5; }
+
+/* ============ SECTION CURTAIN — THE HARDCORE REVEAL ============ */
+.sec-curtain{
+  position:absolute; inset:0; z-index:40;
+  pointer-events:none;
+  will-change: transform;
+  transform: translateZ(0);
+}
+.sec-curtain::after{
+  /* Leading edge accent stripe */
+  content:'';
+  position:absolute; left:0; right:0; bottom:100%;
+  height:14px;
+  background: repeating-linear-gradient(90deg, var(--marigold) 0 20px, var(--saffron) 20px 40px);
+}
+.sec-curtain::before{
+  content:'';
+  position:absolute; left:0; right:0; top:100%;
+  height:14px;
+  background: repeating-linear-gradient(90deg, var(--marigold) 0 20px, var(--saffron) 20px 40px);
+}
+
+/* ============ HEADLINE LINE-MASK REVEAL ============ */
+.h-mask .ln{ overflow: hidden; display: block; padding-bottom: .05em; }
+.h-mask .ln > div{ display: block; will-change: transform; }
+
+/* ============ SERVICES — HORIZONTAL PIN ============ */
+.services-pin{ position:relative; overflow:hidden; }
+.services-track{ display:flex; gap:32px; padding: 0 8vw; will-change: transform; }
+.service-card{
+  flex-shrink:0; width: min(400px, 80vw);
+  background: var(--cream); border:1px solid rgba(20,18,16,.08);
+  border-radius: 28px; padding: 36px; position:relative; overflow:hidden;
+  transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease;
+}
+.service-card:hover{ transform: translateY(-6px); box-shadow: 0 30px 60px -20px rgba(124,45,18,.35); }
+.service-card .num{
+  font-family:'Anton',sans-serif; font-size: 80px; line-height:1;
+  color: transparent; -webkit-text-stroke:1.5px var(--saffron);
+  position:absolute; top:18px; right:24px; opacity:.5;
+}
+.service-card .icon-box{
+  width:68px; height:68px; border-radius:18px; display:flex; align-items:center; justify-content:center;
+  background: linear-gradient(135deg, var(--saffron), var(--marigold));
+  color:#fff; font-size:24px;
+  box-shadow: 0 14px 30px -10px rgba(255,107,26,.5); margin-bottom:24px;
+}
+@media (max-width: 1024px) {
+  .services-pin{ overflow:visible; }
+  .services-track{ flex-direction: column; padding: 0 24px; gap: 20px; transform: none !important; }
+  .service-card{ width: 100%; }
+}
+
+/* ============ VEHICLES ============ */
+.veh-stack{ position:relative; }
+.veh-card{
+  background: var(--cream); border-radius: 28px; overflow:hidden;
+  border:1px solid rgba(20,18,16,.08);
+  box-shadow: 0 20px 50px -25px rgba(20,18,16,.3);
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
+}
+.veh-card:hover{ transform: translateY(-8px); box-shadow: 0 40px 70px -25px rgba(124,45,18,.35); }
+.veh-card .v-img{ height: 240px; overflow:hidden; position:relative; background:#e5e7eb; }
+.veh-card .v-img img{ width:100%; height:100%; object-fit:cover; transition: transform 1s cubic-bezier(.2,.8,.2,1); }
+.veh-card:hover .v-img img{ transform: scale(1.08); }
+.veh-card .v-tag{
+  position:absolute; top:16px; left:16px; background: var(--ink); color: var(--marigold);
+  padding: 6px 14px; border-radius:9999px; font-size:11px; font-weight:700;
+  letter-spacing:.15em; text-transform:uppercase;
+}
+
+/* ============ STATS ============ */
+.stat-num{
+  font-family:'Anton',sans-serif; font-size: clamp(48px, 7vw, 96px); line-height:.85;
+  background: linear-gradient(180deg, var(--saffron), var(--maroon));
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  display:block;
+}
+
+/* ============ WHY CARD ============ */
+.why-card{
+  padding: 22px; border-radius: 20px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,182,39,.2);
+  transition: transform .35s cubic-bezier(.2,.8,.2,1), background .35s ease, border-color .35s ease;
+}
+.why-card:hover{
+  transform: translateY(-4px);
+  background: rgba(255,182,39,.1);
+  border-color: rgba(255,182,39,.5);
+}
+.why-card .ic{
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--marigold), var(--saffron));
+  color: var(--maroon); margin-bottom: 14px; font-size: 18px;
+}
+
+/* ============ GALLERY ============ */
+.gallery-item{ position:relative; overflow:hidden; border-radius: 18px; cursor: pointer; }
+.gallery-item img{ transition: transform 1.2s cubic-bezier(.2,.8,.2,1); width:100%; height:100%; object-fit:cover; }
+.gallery-item:hover img{ transform: scale(1.12); }
+.gallery-item::after{
+  content:''; position:absolute; inset:0;
+  background: linear-gradient(180deg, transparent 55%, rgba(20,18,16,.7));
+  opacity:0; transition: opacity .4s ease;
+}
+.gallery-item:hover::after{ opacity:1; }
+.gallery-item .cap{
+  position:absolute; left:20px; bottom:16px; color:#fff; font-weight:600;
+  transform: translateY(20px); opacity:0;
+  transition: all .45s cubic-bezier(.86,0,.07,1); z-index:2;
+}
+.gallery-item:hover .cap{ transform: translateY(0); opacity:1; }
+
+/* ============ LIGHTBOX ============ */
+.lightbox{
+  position:fixed; inset:0; z-index:200; background: rgba(10,10,10,.94);
+  backdrop-filter: blur(12px); display:flex; align-items:center; justify-content:center;
+  opacity:0; pointer-events:none; transition: opacity .35s ease;
+}
+.lightbox.open{ opacity:1; pointer-events:auto; }
+.lightbox img{
+  max-width: 90vw; max-height: 85vh; border-radius: 14px;
+  box-shadow: 0 40px 100px rgba(0,0,0,.6);
+  transform: scale(.92); transition: transform .5s cubic-bezier(.86,0,.07,1);
+}
+.lightbox.open img{ transform: scale(1); }
+
+/* ============ FAQ ============ */
+.faq-item{ border-bottom:1px solid rgba(20,18,16,.12); overflow: hidden; }
+.faq-q{
+  width:100%; text-align:left; display:flex; align-items:center; justify-content:space-between;
+  padding: 24px 0; font-family:'Poppins',sans-serif; font-weight:700;
+  font-size: clamp(16px, 1.6vw, 20px); color: var(--ink);
+}
+.faq-a{ max-height:0; overflow:hidden; transition: max-height .5s cubic-bezier(.86,0,.07,1); color:#4b4741; }
+.faq-a > div{ padding-bottom:22px; max-width:70ch; }
+.faq-item.open .faq-q i{ transform: rotate(135deg); }
+.faq-q i{ transition: transform .45s cubic-bezier(.86,0,.07,1); color:var(--saffron); }
+
+/* ============ TESTIMONIAL ============ */
+.t-card{
+  border-radius: 24px; padding: 28px;
+  transition: transform .35s cubic-bezier(.2,.8,.2,1);
+}
+.t-card:hover{ transform: translateY(-6px); }
+
+::-webkit-scrollbar{ width:10px; }
+::-webkit-scrollbar-track{ background: var(--cream); }
+::-webkit-scrollbar-thumb{ background: var(--saffron); border-radius: 6px; }
+
+html.lenis, html.lenis body{ height:auto; }
+.lenis.lenis-smooth{ scroll-behavior:auto !important; }
+
+/* ============ BASE REVEALS ============ */
+.reveal-up{ opacity:0; transform: translateY(40px); }
+.reveal-up.in{ opacity:1; transform: translateY(0); transition: opacity .8s ease, transform .9s cubic-bezier(.2,.8,.2,1); }
+
+/* Section wrapper */
+.section-relative{ position: relative; }
+
+@media (max-width: 768px){
+  .hero-title{ font-size: clamp(56px, 16vw, 100px); }
+  .sec-curtain::after, .sec-curtain::before{ height: 10px; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="progress"></div>
+<div class="grain"></div>
+
+<!-- Cursor -->
+<div class="c-trail"></div>
+<div class="c-trail"></div>
+<div class="c-ring"></div>
+<div class="c-dot"></div>
+
+<!-- Section indicator -->
+<div id="secInd" aria-hidden="true">
+  <button data-target="#home"></button>
+  <button data-target="#about"></button>
+  <button data-target="#services"></button>
+  <button data-target="#vehicles"></button>
+  <button data-target="#why"></button>
+  <button data-target="#gallery"></button>
+  <button data-target="#faq"></button>
+  <button data-target="#contact"></button>
+</div>
+
+<!-- Preloader -->
+<div id="preloader">
+  <svg width="240" height="240" viewBox="0 0 260 260" aria-hidden="true">
+    <g>
+      <path class="kolam-line" d="M30 30 L230 30" />
+      <path class="kolam-line" d="M30 80 L230 80" />
+      <path class="kolam-line" d="M30 130 L230 130" />
+      <path class="kolam-line" d="M30 180 L230 180" />
+      <path class="kolam-line" d="M30 230 L230 230" />
+      <path class="kolam-line" d="M30 30 L30 230" />
+      <path class="kolam-line" d="M80 30 L80 230" />
+      <path class="kolam-line" d="M130 30 L130 230" />
+      <path class="kolam-line" d="M180 30 L180 230" />
+      <path class="kolam-line" d="M230 30 L230 230" />
+      <path class="kolam-line" d="M30 30 L230 230" />
+      <path class="kolam-line" d="M230 30 L30 230" />
+      <g fill="var(--maroon)">
+        <circle class="kolam-node" cx="30" cy="30" r="4"/>
+        <circle class="kolam-node" cx="130" cy="30" r="4"/>
+        <circle class="kolam-node" cx="230" cy="30" r="4"/>
+        <circle class="kolam-node" cx="80" cy="80" r="4"/>
+        <circle class="kolam-node" cx="180" cy="80" r="4"/>
+        <circle class="kolam-node" cx="30" cy="130" r="4"/>
+        <circle class="kolam-node" cx="130" cy="130" r="4"/>
+        <circle class="kolam-node" cx="230" cy="130" r="4"/>
+        <circle class="kolam-node" cx="80" cy="180" r="4"/>
+        <circle class="kolam-node" cx="180" cy="180" r="4"/>
+        <circle class="kolam-node" cx="30" cy="230" r="4"/>
+        <circle class="kolam-node" cx="130" cy="230" r="4"/>
+        <circle class="kolam-node" cx="230" cy="230" r="4"/>
+      </g>
+    </g>
+  </svg>
+  <div class="text-center">
+    <div class="font-poppins font-extrabold tracking-[.4em] text-xs" style="color:var(--maroon)">KB TRANSPORT</div>
+    <div class="serif-in text-2xl mt-2">विश्वासाने चालवा</div>
+  </div>
+</div>
+<div class="preload-curtain l"></div>
+<div class="preload-curtain r"></div>
+
+<!-- ================= NAV ================= -->
+<nav class="navbar" id="navbar">
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-8 flex items-center justify-between">
+    <a href="#home" class="flex items-center gap-3">
+      <div class="w-11 h-11 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,var(--saffron),var(--maroon));">
+        <i class="fas fa-truck-moving text-white text-lg"></i>
+      </div>
+      <div class="leading-none">
+        <div class="font-poppins font-extrabold text-[19px] tracking-tight">KB <span style="color:var(--saffron)">Transport</span></div>
+        <div class="serif-in text-[11px] mt-.5" style="color:var(--maroon)">वाघोली • पुणे</div>
+      </div>
+    </a>
+
+    <div class="hidden lg:flex items-center gap-8">
+      <a href="#home" class="nav-link">Home</a>
+      <a href="#about" class="nav-link">About</a>
+      <a href="#services" class="nav-link">Services</a>
+      <a href="#vehicles" class="nav-link">Fleet</a>
+      <a href="#gallery" class="nav-link">Gallery</a>
+      <a href="#faq" class="nav-link">FAQ</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </div>
+
+    <div class="hidden lg:flex items-center gap-4">
+      <a href="tel:+919876543210" class="text-sm font-semibold flex items-center gap-2">
+        <i class="fas fa-phone-alt" style="color:var(--saffron)"></i> +91 98765 43210
+      </a>
+      <a href="#contact" class="btn btn-primary" style="padding:12px 22px;">Get Quote</a>
+    </div>
+
+    <button id="mBtn" class="lg:hidden w-11 h-11 rounded-full flex items-center justify-center border" style="border-color:rgba(20,18,16,.2)">
+      <i class="fas fa-bars text-lg"></i>
+    </button>
+  </div>
+
+  <div id="mMenu" class="lg:hidden max-h-0 overflow-hidden transition-[max-height] duration-500 ease-in-out"
+       style="background:rgba(255,248,231,.98); backdrop-filter:blur(14px); border-top:1px solid rgba(20,18,16,.08)">
+    <div class="px-6 py-6 space-y-1 font-poppins font-semibold">
+      <a href="#home" class="block py-3 border-b border-black/5">Home</a>
+      <a href="#about" class="block py-3 border-b border-black/5">About</a>
+      <a href="#services" class="block py-3 border-b border-black/5">Services</a>
+      <a href="#vehicles" class="block py-3 border-b border-black/5">Fleet</a>
+      <a href="#gallery" class="block py-3 border-b border-black/5">Gallery</a>
+      <a href="#faq" class="block py-3 border-b border-black/5">FAQ</a>
+      <a href="#contact" class="block py-3">Contact</a>
+      <a href="#contact" class="btn btn-primary w-full justify-center mt-4">Get Free Quote</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<section id="home" class="relative min-h-[100svh] overflow-hidden flex flex-col justify-center pt-32 pb-16">
+  <canvas id="webgl-hero"></canvas>
+  <canvas id="truck-3d"></canvas>
+
+  <div class="absolute inset-0 z-[2] pointer-events-none"
+       style="background-image: radial-gradient(circle, rgba(124,45,18,.10) 1.5px, transparent 1.5px); background-size: 44px 44px;"></div>
+
+  <div class="marigold-dot" style="top:18%; left:12%; width:16px; height:16px; z-index:3;"></div>
+  <div class="marigold-dot" style="top:70%; left:8%; width:10px; height:10px; z-index:3;"></div>
+  <div class="marigold-dot" style="top:30%; right:10%; width:22px; height:22px; z-index:3;"></div>
+  <div class="marigold-dot" style="bottom:18%; right:22%; width:14px; height:14px; z-index:3;"></div>
+
+  <div class="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-8 w-full hero-content">
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-10">
+      <div class="eyebrow hero-fade">Khandve Nagar, Wagholi · Pune</div>
+      <div class="hidden md:flex items-center gap-3 text-sm font-medium hero-fade">
+        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+        Available Now · 24/7 Service
+      </div>
+    </div>
+
+    <h1 class="hero-title">
+      <span class="reveal-mask block"><span class="split-line">KB TRANS</span></span>
+      <span class="reveal-mask block"><span class="split-line line2">PORT <span class="accent">सेवा</span></span></span>
+    </h1>
+
+    <div class="mt-8 grid md:grid-cols-2 gap-8 items-end">
+      <div>
+        <p class="serif-in text-2xl md:text-3xl mb-3 hero-fade" style="color:var(--maroon)">
+          विश्वासाने चालवा — <span style="color:var(--saffron)">प्रत्येक प्रवासात</span>
+        </p>
+        <p class="text-lg max-w-lg font-medium hero-fade" style="color:rgba(20,18,16,.7)">
+          Vehicle Rental · Driver Rental · House Shifting · Travel Driver — Pune's most reliable transport partner, since 2018.
+        </p>
+
+        <div class="flex flex-wrap gap-3 mt-8 hero-fade">
+          <a href="#contact" class="btn btn-primary magnetic">
+            <i class="fas fa-file-invoice"></i> Get Free Quote
+          </a>
+          <a href="tel:+919876543210" class="btn btn-ghost magnetic">
+            <i class="fas fa-phone-alt"></i> Call Now
+          </a>
+          <a href="https://wa.me/919876543210" target="_blank" class="btn magnetic" style="background:var(--peacock); color:#fff;">
+            <i class="fab fa-whatsapp"></i> WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <div class="hidden md:grid grid-cols-3 gap-4 hero-fade">
+        <div class="rounded-2xl p-5 border" style="border-color:rgba(20,18,16,.1); background:rgba(255,255,255,.5); backdrop-filter:blur(8px);">
+          <div class="display text-3xl" style="color:var(--saffron)">500+</div>
+          <div class="text-xs font-semibold mt-1 opacity-70">Happy Clients</div>
+        </div>
+        <div class="rounded-2xl p-5 border" style="border-color:rgba(20,18,16,.1); background:rgba(255,255,255,.5); backdrop-filter:blur(8px);">
+          <div class="display text-3xl" style="color:var(--peacock)">8+</div>
+          <div class="text-xs font-semibold mt-1 opacity-70">Years Experience</div>
+        </div>
+        <div class="rounded-2xl p-5 border" style="border-color:rgba(20,18,16,.1); background:rgba(255,255,255,.5); backdrop-filter:blur(8px);">
+          <div class="display text-3xl" style="color:var(--maroon)">4.9★</div>
+          <div class="text-xs font-semibold mt-1 opacity-70">Rating</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="relative z-10 mt-16 flex justify-center hero-fade">
+    <div class="flex flex-col items-center gap-2 opacity-60">
+      <span class="text-[10px] tracking-[.35em] font-bold uppercase">Scroll</span>
+      <div class="w-[1px] h-10 relative overflow-hidden" style="background:rgba(20,18,16,.4)">
+        <div class="absolute inset-x-0 h-4" style="background:var(--saffron); animation: scroll-dot 2s ease-in-out infinite;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+@keyframes scroll-dot{ 0%{ top:-20%; } 100%{ top:120%; } }
+</style>
+
+<!-- Marquee 1 -->
+<div class="truck-border"></div>
+<div style="background:var(--saffron); color:#fff;" class="py-5">
+  <div class="marquee">
+    <div class="marquee-inner">
+      <span class="marquee-item">विश्वास <span class="dot" style="background:#fff"></span> TRUST</span>
+      <span class="marquee-item">सेवा <span class="dot" style="background:#fff"></span> SERVICE</span>
+      <span class="marquee-item">सुरक्षा <span class="dot" style="background:#fff"></span> SAFETY</span>
+      <span class="marquee-item">वेळेवर <span class="dot" style="background:#fff"></span> ON-TIME</span>
+      <span class="marquee-item">विश्वास <span class="dot" style="background:#fff"></span> TRUST</span>
+      <span class="marquee-item">सेवा <span class="dot" style="background:#fff"></span> SERVICE</span>
+      <span class="marquee-item">सुरक्षा <span class="dot" style="background:#fff"></span> SAFETY</span>
+      <span class="marquee-item">वेळेवर <span class="dot" style="background:#fff"></span> ON-TIME</span>
+    </div>
+  </div>
+</div>
+<div class="truck-border"></div>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="section-relative py-24 md:py-32 overflow-hidden">
+  <!-- HARDCORE CURTAIN -->
+  <div class="sec-curtain" data-curtain style="background: var(--ink);"></div>
+
+  <div class="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-8">
+    <div class="grid lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-5 relative reveal-up">
+        <div class="absolute -inset-8 rounded-[42px] opacity-60 parallax-slow"
+             style="background:radial-gradient(circle at 30% 30%, rgba(255,182,39,.55), transparent 60%);"></div>
+        <div class="relative rounded-[32px] overflow-hidden img-mask" style="aspect-ratio:4/5; background:#ddd;">
+          <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1000&q=85" alt="KB Transport fleet" class="w-full h-full object-cover img-zoom">
+        </div>
+        <div class="absolute -top-6 -right-6 w-32 h-32 rounded-full flex items-center justify-center"
+             style="background:var(--marigold); box-shadow:0 20px 40px -10px rgba(255,107,26,.5);">
+          <svg viewBox="0 0 100 100" class="w-full h-full absolute inset-0" style="animation: spin 14s linear infinite;">
+            <defs><path id="circlePath" d="M 50,50 m -35,0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0"/></defs>
+            <text fill="#7C2D12" font-size="9" font-weight="700" letter-spacing="3">
+              <textPath href="#circlePath">• KB TRANSPORT • WAGHOLI • PUNE •</textPath>
+            </text>
+          </svg>
+          <i class="fas fa-truck-moving text-2xl relative" style="color:var(--maroon)"></i>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7">
+        <div class="eyebrow mb-6 reveal-up">About KB Transport · आमच्याबद्दल</div>
+        <h2 class="font-poppins font-extrabold leading-[1.08] mb-6 h-mask" style="font-size: clamp(32px, 4.4vw, 58px);">
+          Transport that feels <span style="color:var(--saffron)">personal</span>, priced like a <em class="serif-in" style="color:var(--peacock); font-style:normal;">neighbour</em>.
+        </h2>
+
+        <p class="text-lg leading-relaxed max-w-2xl mb-8 reveal-up" style="color:rgba(20,18,16,.7)">
+          Started in <b>Khandve Nagar, Wagholi</b> — KB Transport has grown into Pune's most trusted name for
+          vehicle rentals, drivers, house shifting and travel assistance.
+        </p>
+
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div class="rounded-2xl p-6 reveal-up" style="background:rgba(255,182,39,.14); border:1px solid rgba(255,182,39,.4);">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4" style="background:var(--marigold); color:var(--maroon);">
+              <i class="fas fa-bullseye"></i>
+            </div>
+            <h3 class="font-poppins font-extrabold mb-1">Our Mission · ध्येय</h3>
+            <p class="text-sm" style="color:rgba(20,18,16,.7)">Safe, affordable and dependable transportation for every household in Pune.</p>
+          </div>
+          <div class="rounded-2xl p-6 reveal-up" style="background:rgba(11,107,99,.10); border:1px solid rgba(11,107,99,.35);">
+            <div class="w-11 h-11 rounded-xl flex items-center justify-center mb-4" style="background:var(--peacock); color:#fff;">
+              <i class="fas fa-eye"></i>
+            </div>
+            <h3 class="font-poppins font-extrabold mb-1">Our Vision · दृष्टी</h3>
+            <p class="text-sm" style="color:rgba(20,18,16,.7)">To become Maharashtra's most trusted transport partner.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <style>@keyframes spin{ to{ transform: rotate(360deg);} }</style>
+</section>
+
+<!-- Marquee 2 -->
+<div style="background:var(--ink); color:var(--cream);" class="py-5">
+  <div class="marquee reverse">
+    <div class="marquee-inner">
+      <span class="marquee-item" style="font-size:clamp(20px,2.5vw,40px)">SUPER CARRY <span class="dot"></span></span>
+      <span class="marquee-item" style="font-size:clamp(20px,2.5vw,40px)">CHOTA HATHI <span class="dot"></span></span>
+      <span class="marquee-item" style="font-size:clamp(20px,2.5vw,40px)">ASHOK LEYLAND 407 <span class="dot"></span></span>
+      <span class="marquee-item" style="font-size:clamp(20px,2.5vw,40px)">SUPER CARRY <span class="dot"></span></span>
+      <span class="marquee-item" style="font-size:clamp(20px,2.5vw,40px)">CHOTA HATHI <span class="dot"></span></span>
+      <span class="marquee-item" style="font-size:clamp(20px,2.5vw,40px)">ASHOK LEYLAND 407 <span class="dot"></span></span>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SERVICES ============ -->
+<section id="services" class="section-relative" style="background: linear-gradient(180deg, var(--cream) 0%, #fff 100%);">
+  <!-- CURTAIN -->
+  <div class="sec-curtain" data-curtain style="background: var(--saffron);"></div>
+
+  <div class="relative z-10 pt-20 md:pt-28 pb-8 max-w-[1400px] mx-auto px-5 sm:px-8">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <div>
+        <div class="eyebrow mb-4 reveal-up">Our Services · सेवा</div>
+        <h2 class="font-poppins font-extrabold leading-[1.08] h-mask" style="font-size:clamp(32px,4.4vw,56px)">
+          Five ways we <span style="color:var(--saffron)">move</span> Pune.
+        </h2>
+      </div>
+      <p class="max-w-md font-medium reveal-up" style="color:rgba(20,18,16,.6)">
+        <span class="hidden lg:inline">Scroll sideways — explore the full KB Transport service stack.</span>
+        <span class="lg:hidden">Explore the full KB Transport service stack.</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="services-pin pb-20 md:pb-28 relative z-10">
+    <div class="services-track">
+      <article class="service-card">
+        <span class="num">01</span>
+        <div class="icon-box"><i class="fas fa-truck"></i></div>
+        <div class="font-poppins font-extrabold text-2xl mb-2">Vehicle Rental</div>
+        <div class="serif-in mb-4" style="color:var(--maroon)">वाहन भाड्याने</div>
+        <p class="text-sm mb-6" style="color:rgba(20,18,16,.7)">Super Carry, Chota Hathi &amp; Ashok Leyland 407 on rent for goods, deliveries, business &amp; shifting jobs.</p>
+        <ul class="space-y-2 text-sm" style="color:rgba(20,18,16,.8)">
+          <li class="flex gap-2"><i class="fas fa-check" style="color:var(--peacock)"></i>Well-maintained fleet</li>
+          <li class="flex gap-2"><i class="fas fa-check" style="color:var(--peacock)"></i>Flexible hourly / daily plans</li>
+          <li class="flex gap-2"><i class="fas fa-check" style="color:var(--peacock)"></i>Driver included option</li>
+        </ul>
+      </article>
+
+      <article class="service-card">
+        <span class="num">02</span>
+        <div class="icon-box" style="background:linear-gradient(135deg,var(--peacock),#0e7490)"><i class="fas fa-user-tie"></i></div>
+        <div class="font-poppins font-extrabold text-2xl mb-2">Driver Rental</div>
+        <div class="serif-in mb-4" style="color:var(--maroon)">ड्रायव्हर भाड्याने</div>
+        <p class="text-sm mb-6" style="color:rgba(20,18,16,.7)">Professional, verified drivers on daily wage — personal, corporate, temporary replacement.</p>
+        <ul class="space-y-2 text-sm" style="color:rgba(20,18,16,.8)">
+          <li class="flex gap-2"><i class="fas fa-check" style="color:var(--peacock)"></i>Trained &amp; background-checked</li>
+          <li class="flex gap-2"><i class="fas fa-check" style="color:var(--peacock)"></i>Hourly / daily / monthly</li>
+          <li class="flex gap-2"><i class="fas fa-check" style="color:var(--peacock)"></i>Corporate contracts</li>
+        </ul>
+      </article>
+
+      <article class="service-card">
+        <span class="num">03</span>
+        <div class="icon-box" style="background:linear-gradient(135deg,var(--maroon),#a16207)"><i class="fas fa-home"></i></div>
+        <div class="font-poppins font-extrabold text-2xl mb-2">House Shifting</div>
+        <div class="serif-in mb-4" style="color:var(--maroon)">घर बदली सेवा</div>
+        <p class="text-sm mb-6" style="color:rgba(20,18,16,.7)">1BHK to full-office shifts — with vehicle, driver &amp; careful handling of your belongings.</p>
+        <ul class="space-y-2 text-sm" style="color:rgba(20,18,16,.8)">
+          <li class="flex gap-2"><i class="fas fa-check" style="color:var(--peacock)"></i>1 BHK &amp; 2 BHK shifts</li>
+          <li class="flex gap-2"><i class="fas fa-check" style="color:var(--peacock)"></i>Furniture &amp; appliances</li>
+          <li class="flex gap-2"><i class="fas fa-check" style="color:var(--peacock)"></i>Office relocation</li>
+        </ul>
+      </article>
+
+      <article class="service-card">
+        <span class="num">04</span>
+        <div class="icon-box" style="background:linear-gradient(135deg,#7c3aed,#4c1d95)"><i class="fas fa-road"></i></div>
+        <div class="font-poppins font-extrabold text-2xl mb-2">Travel Driver</div>
+        <div class="serif-in mb-4" style="color:var(--maroon)">प्रवास ड्रायव्हर</div>
+        <p class="text-sm mb-6" style="color:rgba(20,18,16,.7)">Long-distance, outstation, family trips and business visits — with experienced highway drivers.</p>
+        <ul class="space-y-2 text-sm" style="color:rgba(20,18,16,.8)">
+          <li class="flex gap-2"><i class="fas fa-check" style="color:var(--peacock)"></i>Local &amp; outstation</li>
+          <li class="flex gap-2"><i class="fas fa-check" style="color:var(--peacock)"></i>Family-friendly drivers</li>
+          <li class="flex gap-2"><i class="fas fa-check" style="color:var(--peacock)"></i>Overnight trips</li>
+        </ul>
+      </article>
+
+      <article class="service-card" style="background:var(--ink); color:var(--cream); border-color:transparent;">
+        <span class="num" style="-webkit-text-stroke:1.5px var(--marigold); opacity:.9">05</span>
+        <div class="icon-box" style="background:linear-gradient(135deg,var(--marigold),var(--saffron))"><i class="fas fa-heart"></i></div>
+        <div class="font-poppins font-extrabold text-2xl mb-2">Senior Citizen Driver</div>
+        <div class="serif-in mb-4" style="color:var(--marigold)">ज्येष्ठ नागरिक सेवा</div>
+        <p class="text-sm opacity-80 mb-6">Patient, caring drivers for seniors — hospital visits, daily commute, airport drops, family functions.</p>
+        <ul class="space-y-2 text-sm opacity-90">
+          <li class="flex gap-2"><i class="fas fa-check" style="color:var(--marigold)"></i>Specially trained</li>
+          <li class="flex gap-2"><i class="fas fa-check" style="color:var(--marigold)"></i>Hospital &amp; airport runs</li>
+          <li class="flex gap-2"><i class="fas fa-check" style="color:var(--marigold)"></i>Long-term retainers</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VEHICLES ============ -->
+<section id="vehicles" class="section-relative py-24 md:py-32" style="background:var(--cream)">
+  <div class="sec-curtain" data-curtain style="background: var(--ink);"></div>
+
+  <div class="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-14">
+      <div class="eyebrow justify-center mb-4 reveal-up" style="display:inline-flex">Our Fleet · आमची गाड्या</div>
+      <h2 class="font-poppins font-extrabold leading-[1.08] h-mask" style="font-size:clamp(32px,4.4vw,56px)">
+        Three machines. <span style="color:var(--saffron)">Every</span> job.
+      </h2>
+    </div>
+
+    <div class="veh-stack grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <article class="veh-card tilt reveal-up" data-stack="1">
+        <div class="v-img">
+          <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=900&q=85" alt="Super Carry">
+          <span class="v-tag">Light Commercial</span>
+        </div>
+        <div class="p-7">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <h3 class="font-poppins font-extrabold text-2xl">Super Carry</h3>
+              <div class="serif-in text-sm" style="color:var(--maroon)">सुपर कॅरी</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs font-bold opacity-60">CAPACITY</div>
+              <div class="display text-2xl" style="color:var(--saffron)">750<small class="text-sm">kg</small></div>
+            </div>
+          </div>
+          <p class="text-sm mb-5" style="color:rgba(20,18,16,.7)">Small goods, local deliveries &amp; light shifting jobs.</p>
+          <a href="#contact" class="btn btn-primary w-full justify-center">Book Super Carry</a>
+        </div>
+      </article>
+
+      <article class="veh-card tilt reveal-up" data-stack="2">
+        <div class="v-img">
+          <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=900&q=85" alt="Chota Hathi">
+          <span class="v-tag" style="background:var(--saffron); color:#fff;">Most Booked</span>
+        </div>
+        <div class="p-7">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <h3 class="font-poppins font-extrabold text-2xl">Chota Hathi</h3>
+              <div class="serif-in text-sm" style="color:var(--maroon)">छोटा हत्ती</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs font-bold opacity-60">CAPACITY</div>
+              <div class="display text-2xl" style="color:var(--saffron)">900<small class="text-sm">kg</small></div>
+            </div>
+          </div>
+          <p class="text-sm mb-5" style="color:rgba(20,18,16,.7)">House shifting, shop deliveries &amp; commercial transport.</p>
+          <a href="#contact" class="btn btn-primary w-full justify-center">Book Chota Hathi</a>
+        </div>
+      </article>
+
+      <article class="veh-card tilt reveal-up" data-stack="3">
+        <div class="v-img">
+          <img src="https://images.unsplash.com/photo-1592838064575-70ed626d3a0e?w=900&q=85" alt="Ashok Leyland 407">
+          <span class="v-tag" style="background:var(--peacock); color:#fff;">Heavy Duty</span>
+        </div>
+        <div class="p-7">
+          <div class="flex items-start justify-between mb-3">
+            <div>
+              <h3 class="font-poppins font-extrabold text-2xl">Ashok Leyland 407</h3>
+              <div class="serif-in text-sm" style="color:var(--maroon)">अशोक लेलँड ४०७</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs font-bold opacity-60">CAPACITY</div>
+              <div class="display text-2xl" style="color:var(--saffron)">2.25<small class="text-sm">Ton</small></div>
+            </div>
+          </div>
+          <p class="text-sm mb-5" style="color:rgba(20,18,16,.7)">Large shifting, heavy goods &amp; full-scale business logistics.</p>
+          <a href="#contact" class="btn btn-primary w-full justify-center">Book 407</a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY CHOOSE — COMPACT ============ -->
+<section id="why" class="section-relative py-24 md:py-28" style="background: var(--ink); color: var(--cream);">
+  <div class="sec-curtain" data-curtain style="background: var(--marigold);"></div>
+
+  <div class="absolute inset-0 opacity-[.07] pointer-events-none"
+       style="background-image: radial-gradient(circle, var(--marigold) 1.5px, transparent 1.5px); background-size: 50px 50px;"></div>
+
+  <div class="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-8">
+    <div class="grid md:grid-cols-2 gap-8 items-end mb-12">
+      <div>
+        <div class="eyebrow mb-4 reveal-up" style="color:var(--marigold)">Why Choose Us · आम्हालाच का?</div>
+        <h2 class="font-poppins font-extrabold leading-[1.08] h-mask" style="font-size:clamp(32px,4.4vw,56px)">
+          Eight reasons Pune keeps <span style="color:var(--marigold)">coming back</span>.
+        </h2>
+      </div>
+      <p class="opacity-70 reveal-up">Trusted by homes, businesses, seniors and travellers across Wagholi, Kharadi, Hadapsar &amp; Viman Nagar.</p>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
+      <div class="why-card reveal-up">
+        <div class="ic"><i class="fas fa-user-check"></i></div>
+        <div class="font-bold mb-1">Experienced Drivers</div>
+        <div class="text-xs opacity-60">5+ years on Pune roads</div>
+      </div>
+      <div class="why-card reveal-up">
+        <div class="ic"><i class="fas fa-tags"></i></div>
+        <div class="font-bold mb-1">Affordable Pricing</div>
+        <div class="text-xs opacity-60">No hidden charges</div>
+      </div>
+      <div class="why-card reveal-up">
+        <div class="ic"><i class="fas fa-tools"></i></div>
+        <div class="font-bold mb-1">Well-Maintained</div>
+        <div class="text-xs opacity-60">Serviced &amp; road-ready</div>
+      </div>
+      <div class="why-card reveal-up">
+        <div class="ic"><i class="fas fa-clock"></i></div>
+        <div class="font-bold mb-1">On-Time Service</div>
+        <div class="text-xs opacity-60">We show up when we say</div>
+      </div>
+      <div class="why-card reveal-up">
+        <div class="ic"><i class="fas fa-shield-alt"></i></div>
+        <div class="font-bold mb-1">Safe &amp; Reliable</div>
+        <div class="text-xs opacity-60">Background-verified drivers</div>
+      </div>
+      <div class="why-card reveal-up">
+        <div class="ic"><i class="fas fa-calendar-alt"></i></div>
+        <div class="font-bold mb-1">Flexible Booking</div>
+        <div class="text-xs opacity-60">Hourly · Daily · Monthly</div>
+      </div>
+      <div class="why-card reveal-up">
+        <div class="ic"><i class="fas fa-route"></i></div>
+        <div class="font-bold mb-1">Local &amp; Outstation</div>
+        <div class="text-xs opacity-60">Pune to anywhere</div>
+      </div>
+      <div class="why-card reveal-up">
+        <div class="ic"><i class="fas fa-smile"></i></div>
+        <div class="font-bold mb-1">Customer First</div>
+        <div class="text-xs opacity-60">500+ happy clients</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 pt-12 border-t" style="border-color:rgba(255,255,255,.1)">
+      <div class="reveal-up"><span class="stat-num" data-count="500">0</span><div class="text-xs uppercase tracking-widest opacity-60 mt-2">Happy Customers</div></div>
+      <div class="reveal-up"><span class="stat-num" data-count="8">0</span><div class="text-xs uppercase tracking-widest opacity-60 mt-2">Years of Trust</div></div>
+      <div class="reveal-up"><span class="stat-num" data-count="3">0</span><div class="text-xs uppercase tracking-widest opacity-60 mt-2">Vehicle Types</div></div>
+      <div class="reveal-up"><span class="stat-num" data-count="24">0</span><div class="text-xs uppercase tracking-widest opacity-60 mt-2">Hours Support</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section id="gallery" class="section-relative py-24 md:py-32">
+  <div class="sec-curtain" data-curtain style="background: var(--peacock);"></div>
+
+  <div class="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-8">
+    <div class="flex flex-wrap items-end justify-between gap-6 mb-12">
+      <div>
+        <div class="eyebrow mb-4 reveal-up">Gallery · छायाचित्रे</div>
+        <h2 class="font-poppins font-extrabold leading-[1.08] h-mask" style="font-size:clamp(32px,4.4vw,56px)">
+          On the road with <span style="color:var(--saffron)">KB</span>.
+        </h2>
+      </div>
+      <p class="max-w-md opacity-60 font-medium reveal-up">A peek into our fleet, our jobs and our people.</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[160px] md:auto-rows-[200px]">
+      <div class="gallery-item col-span-2 row-span-2 reveal-up" data-src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=1400&q=85">
+        <img src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=900&q=85" alt="">
+        <span class="cap">Super Carry · On the job</span>
+      </div>
+      <div class="gallery-item reveal-up" data-src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1400&q=85">
+        <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&q=85" alt="">
+        <span class="cap">Chota Hathi · Fleet</span>
+      </div>
+      <div class="gallery-item reveal-up" data-src="https://images.unsplash.com/photo-1592838064575-70ed626d3a0e?w=1400&q=85">
+        <img src="https://images.unsplash.com/photo-1592838064575-70ed626d3a0e?w=600&q=85" alt="">
+        <span class="cap">407 · Heavy duty</span>
+      </div>
+      <div class="gallery-item col-span-2 reveal-up" data-src="https://images.unsplash.com/photo-1553413077-190dd305871c?w=1400&q=85">
+        <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?w=900&q=85" alt="">
+        <span class="cap">Shifting · Handled with care</span>
+      </div>
+      <div class="gallery-item reveal-up" data-src="https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=1400&q=85">
+        <img src="https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?w=600&q=85" alt="">
+        <span class="cap">Drivers · Trained pros</span>
+      </div>
+      <div class="gallery-item reveal-up" data-src="https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=1400&q=85">
+        <img src="https://images.unsplash.com/photo-1494412651409-8963ce7935a7?w=600&q=85" alt="">
+        <span class="cap">Travel · Outstation</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button id="lbClose" class="absolute top-6 right-6 text-white text-2xl w-11 h-11 rounded-full flex items-center justify-center" style="background:rgba(255,255,255,.1)"><i class="fas fa-times"></i></button>
+  <img id="lbImg" src="" alt="">
+</div>
+
+<!-- ============ TESTIMONIALS ============ -->
+<section class="section-relative py-24 md:py-32" style="background:#fff">
+  <div class="sec-curtain" data-curtain style="background: var(--maroon);"></div>
+
+  <div class="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-14">
+      <div class="eyebrow justify-center mb-4 reveal-up" style="display:inline-flex">Kind Words · अभिप्राय</div>
+      <h2 class="font-poppins font-extrabold leading-[1.08] h-mask" style="font-size:clamp(32px,4.4vw,56px)">
+        Pune trusts <span style="color:var(--saffron)">KB</span>.
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="t-card reveal-up" style="background:var(--cream); border:1px solid rgba(20,18,16,.07);">
+        <div class="flex gap-1 mb-4" style="color:var(--marigold)">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </div>
+        <blockquote class="mb-6" style="color:rgba(20,18,16,.8)">"Needed a driver within the hour for my father's hospital visit. KB sent a wonderful, patient driver."</blockquote>
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white" style="background:var(--peacock)">RS</div>
+          <div>
+            <div class="font-bold text-sm">Rajesh Sharma</div>
+            <div class="text-xs opacity-60">Wagholi · Senior Care</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="t-card reveal-up" style="background:var(--ink); color:var(--cream);">
+        <div class="flex gap-1 mb-4" style="color:var(--marigold)">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </div>
+        <blockquote class="opacity-90 mb-6">"Booked Chota Hathi for my 1BHK shift in Kharadi. Handled everything with care and it cost less than I feared."</blockquote>
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full flex items-center justify-center font-bold" style="background:var(--marigold); color:var(--maroon)">PK</div>
+          <div>
+            <div class="font-bold text-sm">Priya Kapoor</div>
+            <div class="text-xs opacity-60">Kharadi · House Shifting</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="t-card reveal-up" style="background:var(--cream); border:1px solid rgba(20,18,16,.07);">
+        <div class="flex gap-1 mb-4" style="color:var(--marigold)">
+          <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+        </div>
+        <blockquote class="mb-6" style="color:rgba(20,18,16,.8)">"We use KB for our business deliveries every week. Always on time — never once let us down in 3 years."</blockquote>
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-full flex items-center justify-center font-bold text-white" style="background:var(--maroon)">AM</div>
+          <div>
+            <div class="font-bold text-sm">Amit Mehta</div>
+            <div class="text-xs opacity-60">Hadapsar · Business</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section id="faq" class="section-relative py-24 md:py-32" style="background:var(--cream)">
+  <div class="sec-curtain" data-curtain style="background: var(--ink);"></div>
+
+  <div class="relative z-10 max-w-[1200px] mx-auto px-5 sm:px-8">
+    <div class="grid lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-4">
+        <div class="eyebrow mb-4 reveal-up">FAQ · प्रश्न</div>
+        <h2 class="font-poppins font-extrabold leading-[1.08] mb-6 h-mask" style="font-size:clamp(32px,4.4vw,50px)">
+          Answers before you <span style="color:var(--saffron)">ask</span>.
+        </h2>
+        <p class="opacity-60 text-sm reveal-up">Still unsure? Just call — we pick up. <span class="serif-in" style="color:var(--maroon)">आम्ही नेहमी उपलब्ध आहोत.</span></p>
+      </div>
+
+      <div class="lg:col-span-8">
+        <div class="faq-item reveal-up">
+          <button class="faq-q"><span>Do you provide vehicles on rent?</span><i class="fas fa-plus"></i></button>
+          <div class="faq-a"><div>Yes — Super Carry, Chota Hathi and Ashok Leyland 407 on rent for goods transport, local deliveries, business use and shifting jobs.</div></div>
+        </div>
+        <div class="faq-item reveal-up">
+          <button class="faq-q"><span>Do you provide drivers only?</span><i class="fas fa-plus"></i></button>
+          <div class="faq-a"><div>Yes. Trained, verified drivers on daily wage, hourly or monthly — for personal, corporate and temporary needs.</div></div>
+        </div>
+        <div class="faq-item reveal-up">
+          <button class="faq-q"><span>Do you provide travel drivers?</span><i class="fas fa-plus"></i></button>
+          <div class="faq-a"><div>Yes — for local and outstation travel, family trips, business visits and long-distance driving.</div></div>
+        </div>
+        <div class="faq-item reveal-up">
+          <button class="faq-q"><span>Do you provide house shifting services?</span><i class="fas fa-plus"></i></button>
+          <div class="faq-a"><div>Yes — house and office shifting, 1 BHK &amp; 2 BHK shifts, furniture relocation and appliance transportation.</div></div>
+        </div>
+        <div class="faq-item reveal-up">
+          <button class="faq-q"><span>Can senior citizens hire drivers?</span><i class="fas fa-plus"></i></button>
+          <div class="faq-a"><div>Absolutely. Experienced, patient drivers for seniors — daily commuting, hospital visits, family functions, airport pickups &amp; drops.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="section-relative py-20 md:py-24 overflow-hidden" style="background:linear-gradient(120deg, var(--saffron), var(--maroon)); color:#fff;">
+  <div class="sec-curtain" data-curtain style="background: var(--ink);"></div>
+  <div class="absolute inset-0 opacity-20 pointer-events-none"
+       style="background-image: radial-gradient(circle, #FFF8E7 1px, transparent 1px); background-size: 30px 30px;"></div>
+
+  <div class="relative z-10 max-w-[1200px] mx-auto px-5 sm:px-8 text-center">
+    <div class="serif-in text-lg mb-3 reveal-up" style="color:#FFE7B0">प्रवास सुरू करूया?</div>
+    <h2 class="font-poppins font-extrabold leading-[1.08] mb-6 h-mask" style="font-size:clamp(32px,4.8vw,64px)">
+      Need a Vehicle or Driver Today?
+    </h2>
+    <p class="opacity-90 max-w-2xl mx-auto mb-10 text-lg reveal-up">
+      Affordable vehicle rentals, experienced drivers, travel assistance &amp; house shifting services — right here in Wagholi, Pune.
+    </p>
+    <div class="flex flex-wrap gap-3 justify-center reveal-up">
+      <a href="tel:+919876543210" class="btn magnetic" style="background:#fff; color:var(--maroon);">
+        <i class="fas fa-phone-alt"></i> Call Now
+      </a>
+      <a href="https://wa.me/919876543210" target="_blank" class="btn magnetic" style="background:#0B6B63; color:#fff;">
+        <i class="fab fa-whatsapp"></i> WhatsApp Us
+      </a>
+      <a href="#contact" class="btn magnetic" style="background:var(--ink); color:#fff;">
+        <i class="fas fa-file-invoice"></i> Get Free Quote
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="section-relative py-24 md:py-32">
+  <div class="sec-curtain" data-curtain style="background: var(--maroon);"></div>
+
+  <div class="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-8">
+    <div class="grid lg:grid-cols-12 gap-12">
+      <div class="lg:col-span-5">
+        <div class="eyebrow mb-4 reveal-up">Contact · संपर्क</div>
+        <h2 class="font-poppins font-extrabold leading-[1.08] mb-6 h-mask" style="font-size:clamp(32px,4.4vw,56px)">
+          Let's get you <span style="color:var(--saffron)">moving</span>.
+        </h2>
+        <p class="opacity-70 mb-10 reveal-up">Call, WhatsApp or drop a message — we reply fast. Walk-ins welcome at our Wagholi office.</p>
+
+        <div class="space-y-4 mb-10">
+          <a href="tel:+919876543210" class="flex items-start gap-4 p-5 rounded-2xl reveal-up" style="background:var(--cream); border:1px solid rgba(20,18,16,.06)">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:var(--saffron); color:#fff"><i class="fas fa-phone-alt"></i></div>
+            <div><div class="text-xs font-bold uppercase tracking-wider opacity-60">Call</div><div class="font-bold text-lg">+91 98765 43210</div></div>
+          </a>
+          <a href="https://wa.me/919876543210" target="_blank" class="flex items-start gap-4 p-5 rounded-2xl reveal-up" style="background:var(--cream); border:1px solid rgba(20,18,16,.06)">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:#25D366; color:#fff"><i class="fab fa-whatsapp"></i></div>
+            <div><div class="text-xs font-bold uppercase tracking-wider opacity-60">WhatsApp</div><div class="font-bold text-lg">+91 98765 43210</div></div>
+          </a>
+          <a href="mailto:info@kbtransport.in" class="flex items-start gap-4 p-5 rounded-2xl reveal-up" style="background:var(--cream); border:1px solid rgba(20,18,16,.06)">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:var(--peacock); color:#fff"><i class="fas fa-envelope"></i></div>
+            <div><div class="text-xs font-bold uppercase tracking-wider opacity-60">Email</div><div class="font-bold text-lg">info@kbtransport.in</div></div>
+          </a>
+          <div class="flex items-start gap-4 p-5 rounded-2xl reveal-up" style="background:var(--cream); border:1px solid rgba(20,18,16,.06)">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:var(--maroon); color:#fff"><i class="fas fa-map-marker-alt"></i></div>
+            <div>
+              <div class="text-xs font-bold uppercase tracking-wider opacity-60">Address · पत्ता</div>
+              <div class="font-bold leading-snug">Khandve Nagar, Wagholi,<br>Pune, Maharashtra — 412207</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rounded-2xl overflow-hidden h-64 reveal-up" style="border:1px solid rgba(20,18,16,.08)">
+          <iframe src="https://www.google.com/maps?q=Khandve%20Nagar%20Wagholi%20Pune&output=embed"
+                  width="100%" height="100%" style="border:0; filter: sepia(.15) saturate(.9);" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7">
+        <form id="contactForm" class="rounded-3xl p-8 md:p-10 reveal-up" style="background:var(--cream); border:1px solid rgba(20,18,16,.08); box-shadow: 0 30px 80px -30px rgba(124,45,18,.25);">
+          <div class="serif-in text-2xl mb-1" style="color:var(--maroon)">चला, बोलूया.</div>
+          <h3 class="font-poppins font-extrabold text-2xl mb-8">Send us a message</h3>
+
+          <div class="grid sm:grid-cols-2 gap-5">
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold uppercase tracking-wider mb-2 opacity-70">Full Name *</label>
+              <input required type="text" class="w-full px-4 py-3.5 rounded-xl outline-none transition focus:ring-2 focus:ring-orange-300" style="background:#fff; border:1px solid rgba(20,18,16,.12)" placeholder="Your full name">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider mb-2 opacity-70">Mobile *</label>
+              <input required type="tel" class="w-full px-4 py-3.5 rounded-xl outline-none transition focus:ring-2 focus:ring-orange-300" style="background:#fff; border:1px solid rgba(20,18,16,.12)" placeholder="+91 ...">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider mb-2 opacity-70">Service Required</label>
+              <select class="w-full px-4 py-3.5 rounded-xl outline-none" style="background:#fff; border:1px solid rgba(20,18,16,.12)">
+                <option>Vehicle Rental</option>
+                <option>Driver Rental</option>
+                <option>House Shifting</option>
+                <option>Travel Driver</option>
+                <option>Senior Citizen Driver</option>
+              </select>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold uppercase tracking-wider mb-2 opacity-70">Vehicle Required</label>
+              <select class="w-full px-4 py-3.5 rounded-xl outline-none" style="background:#fff; border:1px solid rgba(20,18,16,.12)">
+                <option>Not sure yet</option>
+                <option>Super Carry</option>
+                <option>Chota Hathi</option>
+                <option>Ashok Leyland 407</option>
+              </select>
+            </div>
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold uppercase tracking-wider mb-2 opacity-70">Message</label>
+              <textarea rows="4" class="w-full px-4 py-3.5 rounded-xl outline-none resize-none focus:ring-2 focus:ring-orange-300" style="background:#fff; border:1px solid rgba(20,18,16,.12)" placeholder="Tell us about your requirement…"></textarea>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-full justify-center mt-8 magnetic" style="padding:18px 28px; font-size:15px;">
+            <i class="fas fa-paper-plane"></i> Send Message
+          </button>
+          <div id="formOk" class="hidden mt-4 p-4 rounded-xl text-center font-semibold text-sm" style="background:rgba(11,107,99,.12); color:var(--peacock)">
+            <i class="fas fa-check-circle mr-1"></i> Thank you! We'll get back to you shortly.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<div class="truck-border teal"></div>
+<footer style="background:var(--ink); color:var(--cream);" class="pt-20 pb-8">
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-8">
+    <div class="grid md:grid-cols-12 gap-10 mb-16">
+      <div class="md:col-span-4">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:linear-gradient(135deg,var(--saffron),var(--maroon))">
+            <i class="fas fa-truck-moving text-white text-lg"></i>
+          </div>
+          <div>
+            <div class="font-poppins font-extrabold text-xl">KB <span style="color:var(--marigold)">Transport</span></div>
+            <div class="serif-in text-xs" style="color:var(--marigold)">वाघोली • पुणे</div>
+          </div>
+        </div>
+        <p class="opacity-60 text-sm leading-relaxed mb-6">Trusted Vehicle Rental &amp; Driver Services. Serving Pune from Khandve Nagar, Wagholi — since 2018.</p>
+        <div class="flex gap-3">
+          <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:bg-[color:var(--saffron)]" style="background:rgba(255,255,255,.06)"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:bg-[color:var(--saffron)]" style="background:rgba(255,255,255,.06)"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:bg-[color:var(--saffron)]" style="background:rgba(255,255,255,.06)"><i class="fab fa-youtube"></i></a>
+          <a href="https://wa.me/919876543210" class="w-10 h-10 rounded-full flex items-center justify-center transition hover:bg-[#25D366]" style="background:rgba(255,255,255,.06)"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+
+      <div class="md:col-span-2">
+        <h4 class="font-poppins font-bold mb-5">Services</h4>
+        <ul class="space-y-3 text-sm opacity-70">
+          <li><a href="#services" class="hover:text-[color:var(--marigold)]">Vehicle Rental</a></li>
+          <li><a href="#services" class="hover:text-[color:var(--marigold)]">Driver Rental</a></li>
+          <li><a href="#services" class="hover:text-[color:var(--marigold)]">House Shifting</a></li>
+          <li><a href="#services" class="hover:text-[color:var(--marigold)]">Travel Driver</a></li>
+          <li><a href="#services" class="hover:text-[color:var(--marigold)]">Senior Care Driver</a></li>
+        </ul>
+      </div>
+
+      <div class="md:col-span-2">
+        <h4 class="font-poppins font-bold mb-5">Quick Links</h4>
+        <ul class="space-y-3 text-sm opacity-70">
+          <li><a href="#home" class="hover:text-[color:var(--marigold)]">Home</a></li>
+          <li><a href="#about" class="hover:text-[color:var(--marigold)]">About</a></li>
+          <li><a href="#vehicles" class="hover:text-[color:var(--marigold)]">Fleet</a></li>
+          <li><a href="#gallery" class="hover:text-[color:var(--marigold)]">Gallery</a></li>
+          <li><a href="#faq" class="hover:text-[color:var(--marigold)]">FAQ</a></li>
+        </ul>
+      </div>
+
+      <div class="md:col-span-4">
+        <h4 class="font-poppins font-bold mb-5">Reach Us</h4>
+        <ul class="space-y-4 text-sm opacity-80">
+          <li class="flex gap-3"><i class="fas fa-map-marker-alt mt-1" style="color:var(--marigold)"></i><span>Khandve Nagar, Wagholi,<br>Pune, Maharashtra — 412207</span></li>
+          <li class="flex gap-3"><i class="fas fa-phone-alt mt-1" style="color:var(--marigold)"></i><a href="tel:+919876543210">+91 98765 43210</a></li>
+          <li class="flex gap-3"><i class="fas fa-envelope mt-1" style="color:var(--marigold)"></i><a href="mailto:info@kbtransport.in">info@kbtransport.in</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm opacity-60" style="border-top:1px solid rgba(255,255,255,.1)">
+      <div>© 2026 KB Transport. All Rights Reserved.</div>
+      <div class="serif-in" style="color:var(--marigold)">विश्वास • सेवा • सुरक्षा</div>
+    </div>
+  </div>
+</footer>
+
+<button id="btt" class="fixed bottom-6 right-6 w-12 h-12 rounded-full flex items-center justify-center z-[70] opacity-0 pointer-events-none transition-all duration-300"
+        style="background:var(--saffron); color:#fff; box-shadow:0 16px 40px -10px rgba(255,107,26,.6)">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- LIBRARIES -->
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+/* =========================================================
+   LENIS
+========================================================= */
+const lenis = new Lenis({
+  duration: 1.1,
+  smoothWheel: true,
+  easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  wheelMultiplier: 1,
+  touchMultiplier: 1.6,
+});
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time) => lenis.raf(time * 1000));
+gsap.ticker.lagSmoothing(0);
+gsap.registerPlugin(ScrollTrigger, SplitText);
+gsap.defaults({ force3D: true, overwrite: 'auto' });
+
+const isMobile = window.matchMedia('(max-width: 1024px)').matches;
+const isTouch = 'ontouchstart' in window;
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+const progress = document.getElementById('progress');
+lenis.on('scroll', ({ scroll, limit }) => {
+  progress.style.width = ((scroll / (limit || 1)) * 100) + '%';
+});
+
+/* =========================================================
+   CURSOR
+========================================================= */
+if (!isMobile) {
+  const dot = document.querySelector('.c-dot');
+  const ring = document.querySelector('.c-ring');
+  const trails = document.querySelectorAll('.c-trail');
+  const xd = gsap.quickTo(dot, 'x', { duration: 0.06, ease: 'power3' });
+  const yd = gsap.quickTo(dot, 'y', { duration: 0.06, ease: 'power3' });
+  const xr = gsap.quickTo(ring, 'x', { duration: 0.4, ease: 'power3' });
+  const yr = gsap.quickTo(ring, 'y', { duration: 0.4, ease: 'power3' });
+  const trailFns = [...trails].map((t, i) => ({
+    x: gsap.quickTo(t, 'x', { duration: 0.3 + i * 0.1, ease: 'power3' }),
+    y: gsap.quickTo(t, 'y', { duration: 0.3 + i * 0.1, ease: 'power3' })
+  }));
+  window.addEventListener('mousemove', (e) => {
+    xd(e.clientX); yd(e.clientY); xr(e.clientX); yr(e.clientY);
+    trailFns.forEach(f => { f.x(e.clientX); f.y(e.clientY); });
+  });
+  document.querySelectorAll('a, button, .gallery-item, .faq-q, .magnetic').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+  });
+  document.querySelectorAll('.magnetic').forEach(el => {
+    el.addEventListener('mousemove', (e) => {
+      const r = el.getBoundingClientRect();
+      gsap.to(el, {
+        x: (e.clientX - (r.left + r.width/2)) * 0.22,
+        y: (e.clientY - (r.top + r.height/2)) * 0.22,
+        duration: 0.35, ease: 'power3.out'
+      });
+    });
+    el.addEventListener('mouseleave', () => {
+      gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)' });
+    });
+  });
+}
+
+/* =========================================================
+   PRELOADER
+========================================================= */
+(() => {
+  const lines = document.querySelectorAll('#preloader .kolam-line');
+  const nodes = document.querySelectorAll('#preloader .kolam-node');
+  const tl = gsap.timeline({
+    onComplete: () => {
+      document.body.classList.add('loaded');
+      setTimeout(heroIntro, 350);
+      setTimeout(() => ScrollTrigger.refresh(), 1000);
+    }
+  });
+  tl.to(lines, { strokeDashoffset: 0, duration: 1.2, stagger: 0.04, ease: 'power2.inOut' })
+    .from(nodes, { scale: 0, opacity: 0, transformOrigin: 'center', duration: 0.35, stagger: 0.025, ease: 'back.out(2)' }, '-=0.5')
+    .to('#preloader svg, #preloader > div', { opacity: 0, y: -20, duration: 0.35 }, '+=0.15');
+})();
+
+function heroIntro() {
+  const heroLines = document.querySelectorAll('.hero-title .split-line');
+  const intro = gsap.timeline({ defaults: { ease: 'power4.out' } });
+  heroLines.forEach((line, i) => {
+    const split = new SplitText(line, { type: 'chars' });
+    intro.from(split.chars, {
+      yPercent: 130, opacity: 0, duration: 1, stagger: 0.025, delay: i * 0.1
+    }, 0);
+  });
+  intro.from('.hero-fade', { y: 30, opacity: 0, duration: 0.9, stagger: 0.08 }, '-=0.6');
+}
+
+/* =========================================================
+   NAV
+========================================================= */
+const navbar = document.getElementById('navbar');
+let lastScroll = 0;
+ScrollTrigger.create({
+  start: 0, end: 'max',
+  onUpdate: (self) => {
+    const y = self.scroll();
+    navbar.classList.toggle('scrolled', y > 60);
+    if (y > lastScroll && y > 300) navbar.classList.add('hide');
+    else navbar.classList.remove('hide');
+    lastScroll = y;
+  }
+});
+const mBtn = document.getElementById('mBtn');
+const mMenu = document.getElementById('mMenu');
+mBtn.addEventListener('click', () => {
+  mMenu.classList.toggle('max-h-0');
+  mMenu.classList.toggle('max-h-[500px]');
+  const i = mBtn.querySelector('i');
+  i.classList.toggle('fa-bars'); i.classList.toggle('fa-times');
+});
+document.querySelectorAll('#mMenu a').forEach(a => a.addEventListener('click', () => {
+  mMenu.classList.add('max-h-0'); mMenu.classList.remove('max-h-[500px]');
+  const i = mBtn.querySelector('i'); i.classList.add('fa-bars'); i.classList.remove('fa-times');
+}));
+
+/* =========================================================
+   ⭐⭐ SECTION CURTAIN REVEAL — THE HARDCORE WIPE ⭐⭐
+   Each section is fully covered by a colored panel.
+   As you scroll into it, the panel slides UP, revealing
+   the content underneath. Smooth, GPU-cheap, dramatic.
+========================================================= */
+gsap.utils.toArray('[data-curtain]').forEach(curtain => {
+  const section = curtain.closest('section');
+  if (!section) return;
+
+  // Set initial state — curtain covers the whole section
+  gsap.set(curtain, { yPercent: 0 });
+
+  // Timeline: slide up as section enters viewport
+  gsap.to(curtain, {
+    yPercent: -100,
+    ease: 'power2.inOut',
+    scrollTrigger: {
+      trigger: section,
+      start: 'top 92%',      // section top is 92% of viewport (just entering)
+      end: 'top 38%',        // section top is 38% of viewport (well into view)
+      scrub: 1,              // smooth catch-up (1 second)
+      invalidateOnRefresh: true,
+    }
+  });
+
+  // Accent stripe follow-through: small bonus wave
+  gsap.fromTo(curtain, { yPercent: 0 }, {
+    yPercent: 0,
+    scrollTrigger: {
+      trigger: section,
+      start: 'top 92%',
+      end: 'top 38%',
+      scrub: 1,
+      onUpdate: (self) => {
+        // Add subtle skew during wipe for hardcore feel
+        const skew = (1 - self.progress) * -3;
+        curtain.style.transform = `translateY(${-100 * self.progress}%) skewY(${skew}deg)`;
+      }
+    }
+  });
+});
+
+/* =========================================================
+   HERO — Dolly zoom on exit (scale + move)
+========================================================= */
+gsap.to('.hero-content', {
+  scale: 0.92,
+  yPercent: -8,
+  opacity: 0.4,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '#home',
+    start: 'top top',
+    end: 'bottom top',
+    scrub: 0.6
+  }
+});
+// Hero title moves slightly slower for depth
+gsap.to('.hero-title', {
+  yPercent: -25,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '#home',
+    start: 'top top',
+    end: 'bottom top',
+    scrub: 0.6
+  }
+});
+
+/* =========================================================
+   HEADLINE LINE-MASK REVEALS — word slides up from behind mask
+========================================================= */
+function maskHeadline(el) {
+  if (!el) return;
+  const split = new SplitText(el, { type: 'lines', linesClass: 'ln' });
+  // Wrap each line's inner content in a div so we can slide it
+  split.lines.forEach(line => {
+    const inner = document.createElement('div');
+    inner.innerHTML = line.innerHTML;
+    line.innerHTML = '';
+    line.appendChild(inner);
+  });
+  gsap.from(split.lines.map(l => l.firstChild), {
+    yPercent: 115,
+    duration: 1.2,
+    stagger: 0.12,
+    ease: 'power4.out',
+    scrollTrigger: {
+      trigger: el,
+      start: 'top 84%',
+    }
+  });
+}
+document.querySelectorAll('.h-mask').forEach(maskHeadline);
+
+/* =========================================================
+   BASE REVEALS (batch — very cheap)
+========================================================= */
+ScrollTrigger.batch('.reveal-up', {
+  start: 'top 90%',
+  onEnter: (batch) => gsap.to(batch, {
+    opacity: 1, y: 0, duration: 0.85, stagger: 0.08, ease: 'power3.out', overwrite: true
+  }),
+  once: true
+});
+
+/* Image mask reveal */
+document.querySelectorAll('.img-mask').forEach(el => {
+  gsap.fromTo(el, { clipPath: 'inset(0 0 100% 0)' }, {
+    clipPath: 'inset(0 0 0% 0)', duration: 1.3, ease: 'power4.inOut',
+    scrollTrigger: { trigger: el, start: 'top 82%' }
+  });
+  const img = el.querySelector('.img-zoom');
+  if (img) gsap.from(img, {
+    scale: 1.25, duration: 1.5, ease: 'power4.out',
+    scrollTrigger: { trigger: el, start: 'top 82%' }
+  });
+});
+
+/* Subtle parallax on About bg */
+if (!isMobile) {
+  gsap.to('.parallax-slow', {
+    y: -40, ease: 'none',
+    scrollTrigger: { trigger: '#about', start: 'top bottom', end: 'bottom top', scrub: true }
+  });
+}
+
+/* =========================================================
+   SERVICES — pinned horizontal (desktop only)
+========================================================= */
+(() => {
+  const section = document.querySelector('.services-pin');
+  const track = document.querySelector('.services-track');
+  if (!section || !track || isMobile) return;
+  const getAmount = () => Math.max(0, track.scrollWidth - window.innerWidth + 40);
+  gsap.to(track, {
+    x: () => -getAmount(),
+    ease: 'none',
+    scrollTrigger: {
+      trigger: section,
+      start: 'top top',
+      end: () => '+=' + (getAmount() + window.innerHeight * 0.5),
+      scrub: 1,
+      pin: true,
+      pinSpacing: true,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
+    }
+  });
+})();
+
+/* =========================================================
+   CARD TILT (desktop only)
+========================================================= */
+if (!isMobile) {
+  document.querySelectorAll('.tilt').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      gsap.to(card, {
+        rotateY: px * 8, rotateX: -py * 8,
+        transformPerspective: 1000, transformOrigin: 'center',
+        duration: 0.5, ease: 'power2.out'
+      });
+    });
+    card.addEventListener('mouseleave', () => {
+      gsap.to(card, { rotateX: 0, rotateY: 0, duration: 0.6, ease: 'power3.out' });
+    });
+  });
+}
+
+/* =========================================================
+   STATS COUNTERS
+========================================================= */
+document.querySelectorAll('.stat-num').forEach(el => {
+  const target = parseInt(el.dataset.count);
+  const obj = { v: 0 };
+  ScrollTrigger.create({
+    trigger: el, start: 'top 88%', once: true,
+    onEnter: () => gsap.to(obj, {
+      v: target, duration: 1.6, ease: 'power2.out',
+      onUpdate: () => { el.textContent = Math.round(obj.v) + '+'; }
+    })
+  });
+});
+
+/* =========================================================
+   LIGHTBOX
+========================================================= */
+(() => {
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  document.querySelectorAll('.gallery-item').forEach(item => {
+    item.addEventListener('click', () => {
+      lbImg.src = item.dataset.src;
+      lb.classList.add('open');
+      lenis.stop();
+    });
+  });
+  const close = () => { lb.classList.remove('open'); lenis.start(); };
+  document.getElementById('lbClose').addEventListener('click', close);
+  lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+})();
+
+/* =========================================================
+   FAQ
+========================================================= */
+document.querySelectorAll('.faq-item').forEach(item => {
+  const q = item.querySelector('.faq-q');
+  const a = item.querySelector('.faq-a');
+  q.addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(o => {
+      o.classList.remove('open'); o.querySelector('.faq-a').style.maxHeight = '0px';
+    });
+    if (!isOpen) { item.classList.add('open'); a.style.maxHeight = a.scrollHeight + 'px'; }
+  });
+});
+
+/* =========================================================
+   FORM
+========================================================= */
+document.getElementById('contactForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  document.getElementById('formOk').classList.remove('hidden');
+  this.reset();
+  setTimeout(() => document.getElementById('formOk').classList.add('hidden'), 5000);
+});
+
+/* =========================================================
+   ANCHORS
+========================================================= */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const id = a.getAttribute('href');
+    if (id.length < 2) return;
+    const t = document.querySelector(id);
+    if (!t) return;
+    e.preventDefault();
+    lenis.scrollTo(t, { offset: -70, duration: 1.2 });
+  });
+});
+
+/* =========================================================
+   BACK TO TOP
+========================================================= */
+const btt = document.getElementById('btt');
+window.addEventListener('scroll', () => {
+  const show = window.scrollY > 600;
+  btt.style.opacity = show ? '1' : '0';
+  btt.style.pointerEvents = show ? 'auto' : 'none';
+});
+btt.addEventListener('click', () => lenis.scrollTo(0, { duration: 1.2 }));
+
+/* =========================================================
+   MARIGOLD FLOAT
+========================================================= */
+document.querySelectorAll('.marigold-dot').forEach((dot, i) => {
+  gsap.to(dot, {
+    y: 'random(-25, 25)', x: 'random(-25, 25)',
+    duration: 4 + i * 0.6, repeat: -1, yoyo: true,
+    ease: 'sine.inOut', delay: i * 0.3
+  });
+});
+
+/* =========================================================
+   VELOCITY MARQUEE
+========================================================= */
+(() => {
+  const marquees = document.querySelectorAll('.marquee-inner');
+  let target = 1, current = 1;
+  lenis.on('scroll', ({ velocity }) => {
+    target = 1 + Math.min(Math.abs(velocity) * 0.12, 4);
+  });
+  gsap.ticker.add(() => {
+    current += (target - current) * 0.08;
+    target += (1 - target) * 0.05;
+    const dur = 30 / current;
+    marquees.forEach(m => { m.style.animationDuration = dur + 's'; });
+  });
+})();
+
+/* =========================================================
+   SECTION INDICATOR
+========================================================= */
+(() => {
+  const btns = document.querySelectorAll('#secInd button');
+  const map = new Map();
+  btns.forEach(btn => {
+    const target = document.querySelector(btn.dataset.target);
+    if (!target) return;
+    map.set(target, btn);
+    btn.addEventListener('click', () => lenis.scrollTo(target, { offset: -60, duration: 1.2 }));
+  });
+  [...map.keys()].forEach(sec => {
+    ScrollTrigger.create({
+      trigger: sec, start: 'top 50%', end: 'bottom 50%',
+      onEnter: () => { btns.forEach(b => b.classList.remove('active')); map.get(sec).classList.add('active'); },
+      onEnterBack: () => { btns.forEach(b => b.classList.remove('active')); map.get(sec).classList.add('active'); }
+    });
+  });
+})();
+
+/* =========================================================
+   THREE.JS — hero shader + truck + particles
+========================================================= */
+if (!isMobile && typeof THREE !== 'undefined') {
+  const canvas = document.getElementById('webgl-hero');
+  if (canvas) {
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.z = 5;
+
+    const uniforms = {
+      uTime: { value: 0 },
+      uRes: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+    };
+    const bgMat = new THREE.ShaderMaterial({
+      uniforms, transparent: true,
+      vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }`,
+      fragmentShader: `
+        uniform float uTime; uniform vec2 uRes; varying vec2 vUv;
+        float hash(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
+        float noise(vec2 p){
+          vec2 i=floor(p),f=fract(p);
+          float a=hash(i),b=hash(i+vec2(1.,0.)),c=hash(i+vec2(0.,1.)),d=hash(i+vec2(1.,1.));
+          vec2 u=f*f*(3.-2.*f);
+          return mix(a,b,u.x)+(c-a)*u.y*(1.-u.x)+(d-b)*u.x*u.y;
+        }
+        float fbm(vec2 p){ float v=0.,a=0.5; for(int i=0;i<4;i++){ v+=a*noise(p); p*=2.; a*=0.5;} return v; }
+        void main(){
+          vec2 p=(gl_FragCoord.xy-0.5*uRes.xy)/uRes.y;
+          float t=uTime*0.07;
+          float n1=fbm(p*1.4+vec2(t,t*0.5));
+          float n2=fbm(p*2.2-vec2(t*0.7,t*0.3));
+          vec3 saffron=vec3(1.,0.42,0.10);
+          vec3 marigold=vec3(1.,0.71,0.15);
+          vec3 maroon=vec3(0.49,0.18,0.07);
+          vec3 cream=vec3(1.,0.97,0.90);
+          vec3 col=mix(cream,marigold,smoothstep(0.3,0.7,n1));
+          col=mix(col,saffron,smoothstep(0.45,0.8,n1*n2*1.6));
+          col=mix(col,maroon,smoothstep(0.65,0.95,n2)*0.55);
+          float d=length(p);
+          col=mix(col,cream,smoothstep(0.6,1.4,d));
+          float alpha=smoothstep(0.4,0.9,n1)*0.5+0.2;
+          alpha*=(1.-smoothstep(0.5,1.3,d))*0.9;
+          gl_FragColor=vec4(col,alpha);
+        }
+      `
+    });
+    const bgMesh = new THREE.Mesh(new THREE.PlaneGeometry(2,2), bgMat);
+    bgMesh.scale.set(window.innerWidth/window.innerHeight*5, 5, 1);
+    bgMesh.position.z = -2;
+    scene.add(bgMesh);
+
+    // Truck
+    const truckCanvas = document.getElementById('truck-3d');
+    let truckRenderer, truckScene, truckCamera, truckGroup;
+    if (truckCanvas) {
+      truckRenderer = new THREE.WebGLRenderer({ canvas: truckCanvas, alpha: true, antialias: true });
+      truckRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+      truckRenderer.setSize(truckCanvas.clientWidth, truckCanvas.clientHeight);
+      truckScene = new THREE.Scene();
+      truckCamera = new THREE.PerspectiveCamera(38, truckCanvas.clientWidth/truckCanvas.clientHeight, 0.1, 100);
+      truckCamera.position.set(6, 3.5, 8);
+      truckCamera.lookAt(0, 0.8, 0);
+
+      truckScene.add(new THREE.AmbientLight(0xfff3d6, 0.85));
+      const key = new THREE.DirectionalLight(0xfff0d0, 1.3); key.position.set(5,8,5); truckScene.add(key);
+      const fill = new THREE.DirectionalLight(0xff6b1a, 0.6); fill.position.set(-5,3,-5); truckScene.add(fill);
+      const rim = new THREE.DirectionalLight(0x0b6b63, 0.6); rim.position.set(0,-3,-6); truckScene.add(rim);
+
+      truckGroup = new THREE.Group();
+      const mSaf = new THREE.MeshStandardMaterial({ color: 0xFF6B1A, roughness: 0.4 });
+      const mMar = new THREE.MeshStandardMaterial({ color: 0xFFB627, roughness: 0.45 });
+      const mPea = new THREE.MeshStandardMaterial({ color: 0x0B6B63, roughness: 0.5 });
+      const mInk = new THREE.MeshStandardMaterial({ color: 0x141210, roughness: 0.75 });
+      const mGlass = new THREE.MeshStandardMaterial({ color: 0xFFF8E7, roughness: 0.05, metalness: 0.6, transparent: true, opacity: 0.65 });
+
+      const cargo = new THREE.Mesh(new THREE.BoxGeometry(3.6,2.2,2.4), mPea); cargo.position.set(-1.4,1.55,0); truckGroup.add(cargo);
+      const stripe = new THREE.Mesh(new THREE.BoxGeometry(3.62,0.18,2.42), mMar); stripe.position.set(-1.4,2.5,0); truckGroup.add(stripe);
+      const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.9,1.7,2.3), mSaf); cabin.position.set(1.35,1.3,0); truckGroup.add(cabin);
+      const ws = new THREE.Mesh(new THREE.BoxGeometry(0.08,0.9,1.9), mGlass); ws.position.set(2.3,1.55,0); truckGroup.add(ws);
+      const sw1 = new THREE.Mesh(new THREE.BoxGeometry(1.4,0.7,0.06), mGlass); sw1.position.set(1.3,1.6,1.15); truckGroup.add(sw1);
+      const sw2 = sw1.clone(); sw2.position.z = -1.15; truckGroup.add(sw2);
+      const bump = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.3,2.4), mInk); bump.position.set(2.35,0.5,0); truckGroup.add(bump);
+      const chas = new THREE.Mesh(new THREE.BoxGeometry(5.8,0.25,2.3), mInk); chas.position.set(0,0.35,0); truckGroup.add(chas);
+
+      const lMat = new THREE.MeshStandardMaterial({ color: 0xFFF8E7, emissive: 0xFFB627, emissiveIntensity: 1.3 });
+      const hl1 = new THREE.Mesh(new THREE.SphereGeometry(0.12,12,12), lMat); hl1.position.set(2.38,0.75,0.85); truckGroup.add(hl1);
+      const hl2 = hl1.clone(); hl2.position.z = -0.85; truckGroup.add(hl2);
+
+      const wGeo = new THREE.CylinderGeometry(0.55,0.55,0.42,16); wGeo.rotateZ(Math.PI/2);
+      const hGeo = new THREE.CylinderGeometry(0.22,0.22,0.44,10); hGeo.rotateZ(Math.PI/2);
+      const wheel = (x,z) => {
+        const w = new THREE.Mesh(wGeo, mInk); w.position.set(x,0.55,z);
+        const h = new THREE.Mesh(hGeo, mMar); h.position.set(x,0.55,z);
+        truckGroup.add(w,h);
+      };
+      [1.5, -1.7, -2.9].forEach(x => { wheel(x, 1.15); wheel(x, -1.15); });
+
+      for (let i=0;i<5;i++){
+        const d = new THREE.Mesh(new THREE.SphereGeometry(0.09,10,10), mMar);
+        d.position.set(-0.3 - i*0.7, 0.9, 1.22); truckGroup.add(d);
+        const d2 = d.clone(); d2.position.z = -1.22; truckGroup.add(d2);
+      }
+      truckGroup.rotation.y = -0.3;
+      truckScene.add(truckGroup);
+    }
+
+    // Particles
+    const pCount = 180;
+    const pGeo = new THREE.BufferGeometry();
+    const positions = new Float32Array(pCount*3);
+    const colors = new Float32Array(pCount*3);
+    for (let i=0;i<pCount;i++){
+      positions[i*3] = (Math.random()-0.5)*12;
+      positions[i*3+1] = (Math.random()-0.5)*8;
+      positions[i*3+2] = (Math.random()-0.5)*4 - 1;
+      const c = Math.random();
+      if (c<0.5){ colors[i*3]=1; colors[i*3+1]=0.42; colors[i*3+2]=0.10; }
+      else if (c<0.8){ colors[i*3]=1; colors[i*3+1]=0.71; colors[i*3+2]=0.15; }
+      else { colors[i*3]=0.04; colors[i*3+1]=0.42; colors[i*3+2]=0.39; }
+    }
+    pGeo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+    pGeo.setAttribute('color', new THREE.BufferAttribute(colors,3));
+    const pMat = new THREE.PointsMaterial({
+      size: 0.07, vertexColors: true, transparent: true, opacity: 0.75,
+      sizeAttenuation: true, depthWrite: false, blending: THREE.AdditiveBlending
+    });
+    scene.add(new THREE.Points(pGeo, pMat));
+
+    function resize(){
+      const w = window.innerWidth, h = window.innerHeight;
+      renderer.setSize(w,h); camera.aspect = w/h; camera.updateProjectionMatrix();
+      uniforms.uRes.value.set(w,h);
+      bgMesh.scale.set(w/h*5, 5, 1);
+      if (truckRenderer){
+        const tw = truckCanvas.clientWidth, th = truckCanvas.clientHeight;
+        truckRenderer.setSize(tw,th);
+        truckCamera.aspect = tw/th; truckCamera.updateProjectionMatrix();
+      }
+    }
+    window.addEventListener('resize', resize);
+
+    const clock = new THREE.Clock();
+    function animate(){
+      const t = clock.getElapsedTime();
+      uniforms.uTime.value = t;
+      if (truckGroup){
+        const ratio = Math.min(window.scrollY / window.innerHeight, 1);
+        truckGroup.rotation.y = -0.3 + ratio * Math.PI * 1.1;
+        truckGroup.position.y = Math.sin(t*0.7)*0.08;
+      }
+      renderer.render(scene, camera);
+      if (truckRenderer) truckRenderer.render(truckScene, truckCamera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+  }
+}
+
+/* Refresh */
+window.addEventListener('resize', () => ScrollTrigger.refresh());
+document.fonts?.ready.then(() => ScrollTrigger.refresh());
+</script>
+</body>
+</html>
